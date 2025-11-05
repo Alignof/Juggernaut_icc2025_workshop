@@ -13,6 +13,8 @@ bool timer_stop = true;
 SignalColor signal_color = YELLOW;
 EventGroupHandle_t eg_handle;
 
+#define BIT_TIMER_FAILED (1 << 0)
+
 volatile int time_remain = 0;
 volatile int minits = 0;
 volatile int second = 0;
@@ -28,14 +30,48 @@ void data_send(int digit, int num, SignalColor rgb);
 
 // called every second.
 void IRAM_ATTR onTimer() {
+  BaseType_t xHigherPriorityTaskWoken = pdFALSE;
   if (!timer_stop) {
     digitalWrite(BUZZER, HIGH);
 
     portENTER_CRITICAL_ISR(&timerMux);
     time_remain--;
-    minits = time_remain / 60;
-    second = time_remain % 60;
+    if (time_remain <= 0) {
+      timer_stop = true;
+      minits = 0;
+      second = 0;
+
+      xEventGroupSetBitsFromISR(eg_handle, BIT_TIMER_FAILED, &xHigherPriorityTaskWoken);
+    } else {
+      minits = time_remain / 60;
+      second = time_remain % 60;
+    }
     portEXIT_CRITICAL_ISR(&timerMux);
+    
+    if (xHigherPriorityTaskWoken) {
+      portYIELD_FROM_ISR();
+    }
+  }
+}
+
+void timeup_monitor(void *pvParameters) {
+  while(1) {
+    EventBits_t uxBits = xEventGroupWaitBits(
+      eg_handle,
+      BIT_TIMER_FAILED,
+      pdTRUE,         
+      pdFALSE,
+      portMAX_DELAY
+    );
+
+    if (uxBits & BIT_TIMER_FAILED) {
+      if (timer) {
+        timerEnd(timer);
+        timer = NULL;
+      }
+      
+      failed(); 
+    }
   }
 }
 
@@ -51,41 +87,20 @@ void failed(void) {
   timer_stop = true;
 
   digitalWrite(BUZZER, HIGH);
-  delay(2e3);
+  delay(1200); // 1.2 s
   digitalWrite(BUZZER, LOW);
   while (1) delay(1e5);
 }
 
 void display(void *pvParameters) {
-  bool buzzer_stop = false;
   timer_stop = false;
   minits = time_remain / 60;
   second = time_remain % 60;
 
   while (1) {
-    if (time_remain <= 0) {
-      // If timer is still running
-      if (timer) {
-        // Stop and free timer
-        timerEnd(timer);
-        timer = NULL;
-      }
-
-      signal_color = RED;
-
-      if (digitalRead(SYSSW) == LOW) {
-        buzzer_stop = true;
-      }
-
-      if (buzzer_stop) {
-        digitalWrite(BUZZER, LOW);
-      } else {
-        digitalWrite(BUZZER, HIGH);
-      }
-    } else {
+    if (!timer_stop) {
       digitalWrite(BUZZER, LOW);
     }
-
     data_send(4, (minits / 10) % 10, signal_color);
     data_send(3, minits % 10, signal_color);
     data_send(5, 10, signal_color);
@@ -142,6 +157,7 @@ void setup() {
   time_remain = challenge->time_limit;
   xTaskCreatePinnedToCore(challenge->gaming, "gaming", 8192, NULL, 1, NULL, 1);
   xTaskCreatePinnedToCore(display, "display", 8192, NULL, 1, NULL, 1);
+  xTaskCreatePinnedToCore(timeup_monitor, "timeup_monitor", 2048, NULL, 1, NULL, 0);
   delay(100);
 }
 
