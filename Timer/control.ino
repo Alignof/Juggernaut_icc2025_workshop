@@ -1,5 +1,5 @@
 /*
- * @date		2020 10/31-
+ * @date		2025 11/05-
  * @code name	Juggernaut
  * @author		Takana Norimasa <Alignof@outlook.com>
  * @brief		Educational bomb disposal game
@@ -51,8 +51,7 @@ void failed(void) {
   timer_stop = true;
 
   digitalWrite(BUZZER, HIGH);
-  // while(digitalRead(SYSSW) == HIGH);
-  delay(1e6);
+  delay(2e3);
   digitalWrite(BUZZER, LOW);
   while (1) delay(1e5);
 }
