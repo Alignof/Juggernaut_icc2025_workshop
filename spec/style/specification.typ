@@ -41,9 +41,11 @@
         // header: align(right, text(8pt)[
         //     Juggernaut\#002
         // ]),
-        footer: align(left, text(8pt)[
+        footer: context [
             $copyright$ 2020 Norimasa TAKANA
-        ]),
+            #h(1fr)
+            #counter(page).display("1 / 1", both: true)
+        ],
         numbering: "1",
     )
 
