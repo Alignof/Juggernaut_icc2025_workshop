@@ -87,7 +87,7 @@ void failed(void) {
   timer_stop = true;
 
   digitalWrite(BUZZER, HIGH);
-  delay(1200); // 1.2 s
+  delay(1500); // 1.5 s
   digitalWrite(BUZZER, LOW);
   while (1) delay(1e5);
 }
