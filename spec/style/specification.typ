@@ -116,7 +116,7 @@
             [装置番号], [#number],
             [作問者], [#author.name],
             [作問日], [#date.display()],
-            [制限時間], [#time_limit.display()],
+            [制限時間], [#time_limit.display("[minute]m[second]s")],
         ),
     )
     v(12mm, weak: true)
