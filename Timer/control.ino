@@ -176,7 +176,6 @@ void data_send(int digit, int num, SignalColor rgb) {
 	 */
   data = (1 << (digit + 10)) + (1 << (rgb + 8)) + (seg[num]);
 
-  Serial.println(data, BIN);
   digitalWrite(RCLK, LOW);
   for (i = 0; i < DATASIZE; i++) {
     digitalWrite(SER, (data >> i) & 1);
