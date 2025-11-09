@@ -6,14 +6,14 @@ struct Challenge UnknownSensor = {
 
 // giver pin assgin
 const uint8_t SENSOR = 17;
-const uint8_t LED_R = 18;
-const uint8_t LED_B = 19;
+const uint8_t LED_B = 18;
+const uint8_t LED_G = 19;
 const uint8_t BUTTON_LEFT = 15;
 const uint8_t BUTTON_RIGHT = 23;
 
 void setup_unknown(void) {
-    pinMode(LED_R, OUTPUT); // LED を点灯させるためのピン
     pinMode(LED_B, OUTPUT); // LED を点灯させるためのピン
+    pinMode(LED_G, OUTPUT); // LED を点灯させるためのピン
     pinMode(SENSOR, INPUT_PULLDOWN); // センサの値を読み取るピン
     pinMode(BUTTON_LEFT, INPUT_PULLDOWN); // ボタンの入力を読み取るピン
     pinMode(BUTTON_RIGHT, INPUT_PULLDOWN); // ボタンの入力を読み取るピン
@@ -37,19 +37,19 @@ void unknown_sensor(void *pvParameters) {
 
         // もし，flag1 の中身が true だったら { } の中へ
         if (flag1) {
-          digitalWrite(LED_B, HIGH);
+          digitalWrite(LED_G, HIGH);
         // そうじゃなかったら↓の { } の中へ
         } else {
-          digitalWrite(LED_B, LOW);
+          digitalWrite(LED_G, LOW);
       
         }
 
         // もし，flag3 の中身が true だったら { } の中へ
         if (flag3) {
-          digitalWrite(LED_R, HIGH);
+          digitalWrite(LED_B, HIGH);
         // そうじゃなかったら↓の { } の中へ
         } else {
-          digitalWrite(LED_R, LOW);
+          digitalWrite(LED_B, LOW);
       
         }
 
