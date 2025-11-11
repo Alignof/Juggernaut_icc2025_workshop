@@ -22,6 +22,6 @@ extern struct Challenge Ultrasonic;
 extern struct Challenge UnknownSensor;
 struct Challenge *challenges[CHALLENGES_NUM] = {
     &RedOrBlue,
-    &Ultrasonic,
     &UnknownSensor,
+    &Ultrasonic,
 };
