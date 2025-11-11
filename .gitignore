@@ -1,2 +1,3 @@
 *.pdf
 !spec/images/*.pdf
+!spec/*.pdf
