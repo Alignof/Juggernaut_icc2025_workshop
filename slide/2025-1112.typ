@@ -73,6 +73,7 @@
 #slide(composer: (1.8fr, 1fr))[
     / 名前: 髙名 典雅 (Norimasa TAKANA)
     / 所属: 筑波大学 理工情報生命学術院
+    / 専門: システムソフトウェア，セキュリティ
     / 経歴:
         - 船橋市立大穴中学校
         - 国立木更津工業高等専門学校
@@ -80,7 +81,6 @@
         - 筑波大学 理工情報生命学術院
         - セキュリティ・キャンプ 講師
         - 未踏 スーパークリエータ
-
 ][
     #figure(
         image("images/self_portrait.png", width: 90%),
@@ -90,8 +90,12 @@
 
 == 今回の内容
 
+#include "src/introduction.typ"
+#include "src/red_or_blue.typ"
+#include "src/unknown_sensor.typ"
+#include "src/ultrasonic.typ"
+
 = 付録
 == 参考文献
 #set text(size: 16pt, lang: "en")
 #bibliography("refs.bib", title: none)
-
