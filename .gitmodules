@@ -1,0 +1,3 @@
+[submodule "slide/typst_slide_template"]
+	path = slide/typst_slide_template
+	url = git@github.com:Alignof/typst_slide_template.git
