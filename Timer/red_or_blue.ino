@@ -5,7 +5,7 @@
 struct Challenge RedOrBlue = {
   .gaming = red_or_blue,
   .setup_pin = setup_rob,
-  .time_limit = 300,  // 300 秒 = 5 分
+  .time_limit = 600,  // 600 秒 = 10 分
 };
 
 // giver pin assgin
